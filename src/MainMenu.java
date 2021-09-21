@@ -27,7 +27,8 @@ public class MainMenu {
                     printMainMenu();
                     break;
                 case 4:
-
+                    AdminMenu.startActions();
+                    printMainMenu();
                     break;
                 default:
                     printMainMenu();
