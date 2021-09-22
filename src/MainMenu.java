@@ -1,4 +1,5 @@
 import api.HotelResource;
+import model.Customer;
 import model.IRoom;
 
 import java.time.LocalDate;
@@ -41,13 +42,13 @@ public class MainMenu {
                         }
                         else if(AdminMenu.YesOrNo(sc.next()).equals("y")){
                             System.out.println("Enter Email format: name@domain.com");
-                            String email = sc.next();
-                            if(HotelResource.getInstance().getCustomer(email) != null){
+                            String email1 = sc.next();
+                            if(HotelResource.getInstance().getCustomer(email1) != null){
                                 System.out.println("What room number would you like to reserve?");
                                 String roomNumber =sc.next();
                                 IRoom room = HotelResource.getInstance().getIRoom(roomNumber);
                                 if(room != null){
-                                    System.out.println(HotelResource.getInstance().bookARoom(email,room,checkInDate,checkOutDate));
+                                    System.out.println(HotelResource.getInstance().bookARoom(email1,room,checkInDate,checkOutDate));
                                 }
                             }
                         }
@@ -55,15 +56,21 @@ public class MainMenu {
 
                     break;
                 case 2:
+                    System.out.println("Enter Email format: name@domain.com");
+                    String email2 = sc.next();
+                    Customer customer = HotelResource.getInstance().getCustomer(email2);
+                    if( customer != null) {
+                        System.out.println(HotelResource.getInstance().getCustomerReservations(customer));
+                    }
                     break;
                 case 3:
                     System.out.println("Enter Email format: name@domain.com");
-                    String email = sc.next();
+                    String email3 = sc.next();
                     System.out.println("First name");
                     String firstname = sc.next();
                     System.out.println("Last name");
                     String lastname = sc.next();
-                    HotelResource.getInstance().createACustomer(email, firstname, lastname);
+                    HotelResource.getInstance().createACustomer(email3, firstname, lastname);
                     printMainMenu();
                     break;
                 case 4:
