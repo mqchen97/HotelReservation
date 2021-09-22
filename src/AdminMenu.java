@@ -22,7 +22,15 @@ public class AdminMenu {
     public static void startActions(){
         printAdminMenu();
         Scanner sc = new Scanner(System.in);
-        int action = sc.nextInt();
+        String str = sc.next();
+        int length = str.length();
+        int action;
+        if(str.length() > 1){
+            action = 0;
+        }
+        else {
+            action = str.charAt(0) - '0';
+        }
         while( action != 6){
             switch (action){
                 case 1:
@@ -59,18 +67,42 @@ public class AdminMenu {
                         AdminResource.getInstance().addRoom(room);
                         System.out.println("Would you add another room? Enter y or n");
                         flag = sc.next();
-                        while(flag.equals("y")&& flag.equals("n")) {
-                            System.out.println("Please input y or n");
-                            flag = sc.next();
-                        }
+                        flag = YesOrNo(flag);
                     }while(flag.equals("y"));
                     printAdminMenu();
                     break;
                 case 5:
                     break;
+                default:
+                    System.out.println("invalid input");
+                    printAdminMenu();
+                    break;
             }
-            action = sc.nextInt();
+            str = sc.next();
+            length = str.length();
+            if(str.length() > 1){
+                action = 0;
+            }
+            action = str.charAt(0) - '0';
         }
+    }
+
+    public static String YesOrNo(String flag){
+        int n = 0;
+        Scanner sc = new Scanner(System.in);
+        while(flag.equals("y")&& flag.equals("n")) {
+            System.out.println("Please input y or n");
+            flag = sc.next();
+            if(n == 10){
+                break;
+            }
+            n++;
+        }
+        if(n == 10){
+            System.out.println("default n");
+            flag = "n";
+        }
+        return flag;
     }
 
 }

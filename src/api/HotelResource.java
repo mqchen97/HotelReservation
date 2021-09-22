@@ -6,6 +6,7 @@ import model.Reservation;
 import service.CustomerService;
 import service.ReservationService;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 
@@ -36,7 +37,7 @@ public class HotelResource {
         return null;
     }
 
-    public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate){
+    public Reservation bookARoom(String customerEmail, IRoom room, LocalDate checkInDate, LocalDate checkOutDate){
         Customer customer = HotelResource.getInstance().getCustomer(customerEmail);
         return ReservationService.getInstance().reserveARoom(customer,room,checkInDate,checkOutDate);
     }
@@ -46,7 +47,7 @@ public class HotelResource {
         return ReservationService.getInstance().getCustomerReservation(customer);
     }
 
-    public Collection<IRoom> findARoom(Date checkIn, Date checkOut){
+    public Collection<IRoom> findARoom(LocalDate checkIn, LocalDate checkOut){
         return ReservationService.getInstance().findRooms(checkIn,checkOut);
     }
 

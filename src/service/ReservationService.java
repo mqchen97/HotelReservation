@@ -4,6 +4,8 @@ import model.Customer;
 import model.IRoom;
 import model.Reservation;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ReservationService {
@@ -46,21 +48,22 @@ public class ReservationService {
         }
     }
 
-    public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
+    public Reservation reserveARoom(Customer customer, IRoom room, LocalDate checkInDate, LocalDate checkOutDate){
         Reservation reservation = new Reservation(room,customer,checkInDate,checkOutDate);
         reservations.add(reservation);
         return reservation;
     }
 
-    public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate){
+    public Collection<IRoom> findRooms(LocalDate checkInDate, LocalDate checkOutDate){
         Collection<IRoom> exRooms = new HashSet<>(rooms);
         for(Reservation reservation : reservations){
-            if((reservation.getCheckInDate().before(checkInDate)&&reservation.getCheckOutDate().after(checkInDate))
-            ||(reservation.getCheckInDate().before(checkOutDate)&&reservation.getCheckOutDate().after(checkOutDate))){
+            if((reservation.getCheckInDate().isBefore(checkInDate)&&reservation.getCheckOutDate().isAfter(checkInDate))
+            ||(reservation.getCheckInDate().isBefore(checkOutDate)&&reservation.getCheckOutDate().isAfter(checkOutDate))){
                 IRoom room = reservation.getRoom();
                 exRooms.remove(room);
             }
         }
+
         return exRooms;
     }
 

@@ -1,5 +1,9 @@
 import api.HotelResource;
+import model.IRoom;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -8,11 +12,47 @@ public class MainMenu {
         System.out.println("Welcome to the Hotel Reservation Application");
         printMainMenu();
         Scanner sc = new Scanner(System.in);
-        int action = sc.nextInt();
-
+        String str = sc.next();
+        int length = str.length();
+        int action;
+        if(str.length() > 1){
+            action = 0;
+        }
+        else {
+            action = str.charAt(0) - '0';
+        }
         while (5 != action) {
             switch (action) {
                 case 1:
+                    System.out.println("Enter CheckIn Date mm/dd/yyyy like 03/27/2021");
+                    String checkInString = sc.next();
+                    LocalDate checkInDate = getDateFromString(checkInString);
+                    System.out.println("Enter CheckOut Date mm/dd/yyyy like 16/9/2021");
+                    String checkOutString = sc.next();
+                    LocalDate checkOutDate = getDateFromString(checkOutString);
+                    System.out.println(HotelResource.getInstance().findARoom(checkInDate, checkOutDate));
+
+                    System.out.println("--------------");
+                    System.out.println("Would you like to book a room? y/n");
+                    if(AdminMenu.YesOrNo(sc.next()).equals("y")){
+                        System.out.println("Do you have a account with us? y/n");
+                        if(AdminMenu.YesOrNo(sc.next()).equals("n")){
+                            System.out.println("Please sign up");
+                        }
+                        else if(AdminMenu.YesOrNo(sc.next()).equals("y")){
+                            System.out.println("Enter Email format: name@domain.com");
+                            String email = sc.next();
+                            if(HotelResource.getInstance().getCustomer(email) != null){
+                                System.out.println("What room number would you like to reserve?");
+                                String roomNumber =sc.next();
+                                IRoom room = HotelResource.getInstance().getIRoom(roomNumber);
+                                if(room != null){
+                                    System.out.println(HotelResource.getInstance().bookARoom(email,room,checkInDate,checkOutDate));
+                                }
+                            }
+                        }
+                    }
+
                     break;
                 case 2:
                     break;
@@ -31,12 +71,19 @@ public class MainMenu {
                     printMainMenu();
                     break;
                 default:
+                    System.out.println("invalid input");
                     printMainMenu();
+                    break;
             }
-
-            action = sc.nextInt();
+            str = sc.next();
+            length = str.length();
+            if(str.length() > 1){
+                action = 0;
+            }
+            action = str.charAt(0) - '0';
         }
     }
+
 
     public static void printMainMenu() {
         System.out.println("---------------------------------------------");
@@ -47,5 +94,11 @@ public class MainMenu {
         System.out.println("5. Exit");
         System.out.println("---------------------------------------------");
         System.out.println("Please select a number for the menu option");
+    }
+
+    public static LocalDate getDateFromString(String str){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("mm/dd/yyyy");
+        LocalDate date = LocalDate.parse(str,dtf);
+        return date;
     }
 }

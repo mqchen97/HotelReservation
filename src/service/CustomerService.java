@@ -41,6 +41,7 @@ public class CustomerService {
         catch (IllegalArgumentException ex){
             System.out.println(ex.getLocalizedMessage());
         }
+
     }
 
     public Customer getCustomer(String customerEmail){
