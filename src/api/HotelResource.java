@@ -50,4 +50,7 @@ public class HotelResource {
         return ReservationService.getInstance().findRooms(checkIn,checkOut);
     }
 
+    public boolean roomIsEmpty(){
+        return ReservationService.getInstance().getRooms().isEmpty();
+    }
 }

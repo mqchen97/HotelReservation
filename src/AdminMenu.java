@@ -13,8 +13,7 @@ public class AdminMenu {
         System.out.println("2. See all Rooms");
         System.out.println("3. See all Reservations");
         System.out.println("4. Add a Room");
-        System.out.println("5. Add Test Data");
-        System.out.println("6. Back to Main Menu");
+        System.out.println("5. Back to Main Menu");
         System.out.println("---------------------------------------------");
         System.out.println("Please select a number for the menu option");
     }
@@ -31,7 +30,7 @@ public class AdminMenu {
         else {
             action = str.charAt(0) - '0';
         }
-        while( action != 6){
+        while( action != 5){
             switch (action){
                 case 1:
                     System.out.println(AdminResource.getInstance().getAllCustomers());
@@ -43,16 +42,33 @@ public class AdminMenu {
                     break;
                 case 3:
                     AdminResource.getInstance().displayAllReservations();
+                    printAdminMenu();
                     break;
                 case 4:
                     String flag;
                     do {
                         System.out.println("Enter room number");
-                        String roomNumber = sc.next();
+                        String roomNumber;
+                        roomNumber = sc.next();
                         System.out.println("Enter price per night");
-                        double price = sc.nextDouble();
+                        double price = 0;
+                        String sprice = sc.next();
+                        try{
+                             price = Double.parseDouble(sprice);
+                        }catch (IllegalArgumentException ex){
+                            System.out.println("invalid input");
+                            break;
+                        }
                         System.out.println("Enter room type: 1 for single bed, 2 for double bed");
-                        int type = sc.nextInt();
+                        String stype = sc.next();
+                        int type = 0;
+                        try{
+                            type = Integer.parseInt(stype);
+                        }
+                        catch (IllegalArgumentException ex){
+                            System.out.println("invalid input");
+                            break;
+                        }
                         while (type != 1 && type != 2) {
                             System.out.println("Please input 1 & 2");
                             type = sc.nextInt();
@@ -68,10 +84,8 @@ public class AdminMenu {
                         System.out.println("Would you add another room? Enter y or n");
                         flag = sc.next();
                         flag = YesOrNo(flag);
-                    }while(flag.equals("y"));
+                    } while (flag.equals("y"));
                     printAdminMenu();
-                    break;
-                case 5:
                     break;
                 default:
                     System.out.println("invalid input");
@@ -90,10 +104,11 @@ public class AdminMenu {
     public static String YesOrNo(String flag){
         int n = 0;
         Scanner sc = new Scanner(System.in);
-        while(flag.equals("y")&& flag.equals("n")) {
+        while(!flag.equals("y")&& !flag.equals("n")) {
             System.out.println("Please input y or n");
+            System.out.println(5-n + " chances left");
             flag = sc.next();
-            if(n == 10){
+            if(n == 5){
                 break;
             }
             n++;
